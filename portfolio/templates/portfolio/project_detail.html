@@ -1,0 +1,84 @@
+{% extends 'portfolio/base.html' %}
+
+{% block title %}{{ project.title }} — Case Study{% endblock %}
+
+{% block content %}
+<article class="case-study">
+    <header class="case-header">
+        <div class="container">
+            <nav class="case-breadcrumb" aria-label="Breadcrumb" data-aos="fade-up">
+                <a href="{% url 'projects' %}"><i class="fas fa-arrow-left" aria-hidden="true"></i> All projects</a>
+            </nav>
+            <div class="row gy-4 align-items-end">
+                <div class="col-lg-8" data-aos="fade-up">
+                    <p class="eyebrow">{{ project.get_category_display }} · CASE STUDY</p>
+                    <h1>{{ project.title }}</h1>
+                    <p class="case-summary">{{ project.card_summary }}</p>
+                </div>
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="80">
+                    <dl class="case-meta">
+                        {% if project.role %}<div><dt>My role</dt><dd>{{ project.role }}</dd></div>{% endif %}
+                        <div><dt>Completed</dt><dd>{{ project.created_date|date:"F Y" }}</dd></div>
+                        <div><dt>Technology</dt><dd>{{ project.get_tech_list|slice:":3"|join:", " }}</dd></div>
+                    </dl>
+                </div>
+            </div>
+            <div class="case-actions" data-aos="fade-up">
+                {% if project.live_link %}<a href="{{ project.live_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View live project <i class="fas fa-arrow-up-right-from-square ms-2"></i></a>{% endif %}
+                {% if project.github_link %}<a href="{{ project.github_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost"><i class="fab fa-github me-2"></i>Source code</a>{% endif %}
+            </div>
+        </div>
+    </header>
+
+    {% if project.image %}
+    <div class="container case-cover" data-aos="fade-up">
+        <img src="{{ project.image.url }}" alt="{{ project.image_alt|default:project.title }}">
+    </div>
+    {% endif %}
+
+    <div class="container case-body">
+        <div class="case-layout">
+            <aside class="case-nav" aria-label="Case study sections">
+                <span>On this page</span>
+                <a href="#overview">Overview</a>
+                {% if project.problem %}<a href="#problem">Problem</a>{% endif %}
+                {% if project.solution %}<a href="#solution">Solution</a>{% endif %}
+                {% if project.architecture %}<a href="#architecture">Architecture</a>{% endif %}
+                {% if project.key_features %}<a href="#features">Features</a>{% endif %}
+                {% if project.challenges %}<a href="#challenges">Challenges</a>{% endif %}
+                {% if project.results %}<a href="#results">Results</a>{% endif %}
+                {% if project.gallery_images.all %}<a href="#gallery">Gallery</a>{% endif %}
+            </aside>
+
+            <div class="case-content">
+                <section id="overview" class="case-section" data-aos="fade-up">
+                    <p class="section-number">01 / OVERVIEW</p>
+                    <h2>Project overview</h2>
+                    <div class="case-prose">{{ project.description|linebreaks }}</div>
+                    <div class="case-tech"><h3>Technology stack</h3><div class="tech-stack">{% for tech in project.get_tech_list %}<span>{{ tech }}</span>{% endfor %}</div></div>
+                </section>
+
+                {% if project.problem %}<section id="problem" class="case-section" data-aos="fade-up"><p class="section-number">02 / THE PROBLEM</p><h2>What needed to be solved</h2><div class="case-prose">{{ project.problem|linebreaks }}</div></section>{% endif %}
+                {% if project.solution %}<section id="solution" class="case-section" data-aos="fade-up"><p class="section-number">03 / THE SOLUTION</p><h2>How I approached it</h2><div class="case-prose">{{ project.solution|linebreaks }}</div></section>{% endif %}
+                {% if project.architecture %}<section id="architecture" class="case-section" data-aos="fade-up"><p class="section-number">04 / ARCHITECTURE</p><h2>How the system works</h2><div class="case-prose">{{ project.architecture|linebreaks }}</div></section>{% endif %}
+                {% if project.key_features %}<section id="features" class="case-section" data-aos="fade-up"><p class="section-number">05 / KEY FEATURES</p><h2>What the project delivers</h2><div class="feature-grid">{% for feature in project.get_feature_list %}<div><span>0{{ forloop.counter }}</span><p>{{ feature }}</p></div>{% endfor %}</div></section>{% endif %}
+                {% if project.challenges %}<section id="challenges" class="case-section" data-aos="fade-up"><p class="section-number">06 / CHALLENGES</p><h2>Engineering through complexity</h2><div class="case-prose">{{ project.challenges|linebreaks }}</div></section>{% endif %}
+                {% if project.results %}<section id="results" class="case-section case-results" data-aos="fade-up"><p class="section-number">07 / RESULTS</p><h2>The outcome</h2><div class="case-prose">{{ project.results|linebreaks }}</div></section>{% endif %}
+            </div>
+        </div>
+
+        {% if project.gallery_images.all %}
+        <section id="gallery" class="case-gallery section-pad" data-aos="fade-up">
+            <div class="section-heading"><div><p class="eyebrow">PROJECT GALLERY</p><h2>A closer look at the <span>finished work.</span></h2></div></div>
+            <div class="gallery-grid">
+                {% for item in project.gallery_images.all %}
+                <figure class="gallery-item {% if forloop.first %}gallery-featured{% endif %}"><img src="{{ item.image.url }}" alt="{{ item.alt_text }}" loading="lazy">{% if item.caption %}<figcaption>{{ item.caption }}</figcaption>{% endif %}</figure>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+    </div>
+
+    <section class="next-project"><div class="container"><p>Interested in the engineering behind this project?</p><h2>Let’s discuss what we could build together.</h2><a href="{% url 'contact' %}" class="btn btn-primary btn-lg">Start a conversation <i class="fas fa-arrow-right ms-2"></i></a></div></section>
+</article>
+{% endblock %}

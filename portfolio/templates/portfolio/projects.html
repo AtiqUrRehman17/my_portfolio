@@ -1,0 +1,68 @@
+{% extends 'portfolio/base.html' %}
+
+{% block title %}Selected Work — Atiq Ur Rehman{% endblock %}
+
+{% block content %}
+<section class="work-header">
+    <div class="container">
+        <div class="row align-items-end gy-4">
+            <div class="col-lg-8" data-aos="fade-up">
+                <p class="eyebrow">SELECTED WORK</p>
+                <h1>Ideas turned into <span>working systems.</span></h1>
+            </div>
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="80">
+                <p class="work-intro">A collection of AI, machine learning, and backend projects—focused on the problem, the engineering decisions, and the outcome.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="projects-grid section-pad">
+    <div class="container">
+        {% if projects %}
+        <div class="filter-bar" data-aos="fade-up" aria-label="Filter projects">
+            <span class="filter-label">Filter by</span>
+            <div class="filter-buttons">
+                <button class="btn active" type="button" data-filter="all">All</button>
+                {% for category in categories %}
+                <button class="btn" type="button" data-filter="{{ category.value }}">{{ category.label }}</button>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="work-list">
+            {% for project in projects %}
+            <article class="work-card project-item" data-category="{{ project.category }}" data-aos="fade-up">
+                <a class="work-image" href="{% url 'project_detail' project.slug %}" aria-label="View {{ project.title }} case study">
+                    {% if project.image %}
+                    <img src="{{ project.image.url }}" alt="{{ project.image_alt|default:project.title }}">
+                    {% else %}
+                    <div class="placeholder-image"><span>0{{ forloop.counter }}</span><i class="fas fa-code" aria-hidden="true"></i></div>
+                    {% endif %}
+                    {% if project.featured %}<span class="featured-label"><i class="fas fa-star" aria-hidden="true"></i> Featured</span>{% endif %}
+                </a>
+                <div class="work-content">
+                    <div class="work-meta"><span>{{ project.get_category_display }}</span><span>{{ project.created_date|date:"Y" }}</span></div>
+                    <h2><a href="{% url 'project_detail' project.slug %}">{{ project.title }}</a></h2>
+                    <p>{{ project.card_summary|truncatewords:32 }}</p>
+                    <div class="tech-stack">
+                        {% for tech in project.get_tech_list|slice:":5" %}<span>{{ tech }}</span>{% endfor %}
+                    </div>
+                    <div class="work-actions">
+                        <a href="{% url 'project_detail' project.slug %}" class="text-link">Read case study <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                        <div class="external-actions">
+                            {% if project.github_link %}<a href="{{ project.github_link }}" target="_blank" rel="noopener noreferrer" aria-label="{{ project.title }} source code"><i class="fab fa-github"></i></a>{% endif %}
+                            {% if project.live_link %}<a href="{{ project.live_link }}" target="_blank" rel="noopener noreferrer" aria-label="{{ project.title }} live demo"><i class="fas fa-arrow-up-right-from-square"></i></a>{% endif %}
+                        </div>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        <div class="filter-empty empty-state" hidden>No projects are available in this category.</div>
+        {% else %}
+        <div class="empty-state"><h2>Case studies are on the way.</h2><p>Project details are currently being prepared. Please check back soon.</p></div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

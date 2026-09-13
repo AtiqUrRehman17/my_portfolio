@@ -1,0 +1,91 @@
+{% extends 'portfolio/base.html' %}
+
+{% block title %}Experience — {{ site_profile.name|default:"Atiq Ur Rehman" }}{% endblock %}
+
+{% block content %}
+<header class="resume-hero">
+    <div class="container">
+        <div class="row align-items-end gy-4">
+            <div class="col-lg-8" data-aos="fade-up">
+                <p class="eyebrow">EXPERIENCE & EXPERTISE</p>
+                <h1>Building useful technology through <span>curiosity and craft.</span></h1>
+            </div>
+            <div class="col-lg-4 resume-intro" data-aos="fade-up" data-aos-delay="80">
+                <p>{{ site_profile.short_bio|default:"AI/ML and backend engineering experience focused on dependable systems, thoughtful architecture, and practical results." }}</p>
+                {% if site_profile.resume %}
+                <a href="{{ site_profile.resume.url }}" target="_blank" class="btn btn-primary"><i class="fas fa-file-pdf me-2" aria-hidden="true"></i>Download résumé</a>
+                {% else %}
+                <span class="resume-unavailable"><i class="fas fa-circle-info me-2"></i>Résumé PDF will be available soon</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="resume-content section-pad">
+    <div class="container">
+        <div class="resume-layout">
+            <aside class="resume-sidebar" data-aos="fade-up">
+                <div class="resume-profile">
+                    {% if site_profile.profile_image %}
+                    <img src="{{ site_profile.profile_image.url }}" alt="{{ site_profile.profile_image_alt|default:site_profile.name }}">
+                    {% else %}<div class="resume-monogram">AR</div>{% endif %}
+                    <h2>{{ site_profile.name|default:"Atiq Ur Rehman" }}</h2>
+                    <p>{{ site_profile.professional_title|default:"AI/ML & Backend Engineer" }}</p>
+                </div>
+                <dl class="profile-facts">
+                    {% if site_profile.location %}<div><dt>Based in</dt><dd>{{ site_profile.location }}</dd></div>{% endif %}
+                    <div><dt>Working</dt><dd>Remote · Worldwide</dd></div>
+                    {% if site_profile.available_for_work %}<div><dt>Status</dt><dd class="available"><span class="status-dot"></span>{{ site_profile.availability_text }}</dd></div>{% endif %}
+                </dl>
+                <div class="profile-links">
+                    {% if site_profile.email %}<a href="mailto:{{ site_profile.email }}"><i class="fas fa-envelope"></i>Email</a>{% endif %}
+                    {% if site_profile.github_url %}<a href="{{ site_profile.github_url }}" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i>GitHub <span>↗</span></a>{% endif %}
+                    {% if site_profile.linkedin_url %}<a href="{{ site_profile.linkedin_url }}" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i>LinkedIn <span>↗</span></a>{% endif %}
+                </div>
+            </aside>
+
+            <div class="resume-main">
+                <section class="resume-block" data-aos="fade-up">
+                    <div class="resume-block-title"><span>01</span><h2>Experience</h2></div>
+                    <div class="career-timeline">
+                        {% for exp in experiences %}
+                        <article class="career-item">
+                            <div class="career-marker"></div>
+                            <div class="career-topline">
+                                <div><h3>{{ exp.title }}</h3><p>{{ exp.company }}{% if exp.location %} · {{ exp.location }}{% endif %}</p></div>
+                                <time>{{ exp.start_date|date:"M Y" }} — {% if exp.current %}Present{% else %}{{ exp.end_date|date:"M Y" }}{% endif %}</time>
+                            </div>
+                            <div class="career-description">{{ exp.description|linebreaks }}</div>
+                            {% if exp.get_achievement_list %}
+                            <ul class="achievement-list">{% for achievement in exp.get_achievement_list %}<li>{{ achievement }}</li>{% endfor %}</ul>
+                            {% endif %}
+                            {% if exp.get_tech_list %}<div class="tech-stack">{% for tech in exp.get_tech_list %}<span>{{ tech }}</span>{% endfor %}</div>{% endif %}
+                        </article>
+                        {% empty %}<div class="empty-state">Experience details are being updated.</div>{% endfor %}
+                    </div>
+                </section>
+
+                <section class="resume-block" data-aos="fade-up">
+                    <div class="resume-block-title"><span>02</span><h2>Education</h2></div>
+                    <div class="education-grid">
+                        {% for edu in education %}
+                        <article class="education-card"><div class="education-year">{{ edu.year }}</div><h3>{{ edu.degree }}</h3><p class="institution">{{ edu.institution }}</p>{% if edu.grade %}<p class="education-grade">{{ edu.grade }}</p>{% endif %}{% if edu.description %}<p>{{ edu.description }}</p>{% endif %}</article>
+                        {% empty %}<div class="empty-state">Education details are being updated.</div>{% endfor %}
+                    </div>
+                </section>
+
+                <section class="resume-block" data-aos="fade-up">
+                    <div class="resume-block-title"><span>03</span><h2>Technical toolkit</h2></div>
+                    <div class="toolkit-grid">
+                        {% regroup skills by get_skill_type_display as skill_groups %}
+                        {% for group in skill_groups %}
+                        <article class="toolkit-group"><h3>{{ group.grouper }}</h3><div>{% for skill in group.list %}<span class="tool-item">{% if skill.icon %}<i class="{{ skill.icon }}" aria-hidden="true"></i>{% endif %}<span><strong>{{ skill.name }}</strong>{% if skill.description %}<small>{{ skill.description }}</small>{% endif %}</span></span>{% endfor %}</div></article>
+                        {% empty %}<div class="empty-state">Technical skills are being updated.</div>{% endfor %}
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

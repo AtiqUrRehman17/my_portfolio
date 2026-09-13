@@ -1,0 +1,126 @@
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block title %}Atiq Ur Rehman — AI/ML & Backend Engineer{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow-one" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow-two" aria-hidden="true"></div>
+    <div class="container position-relative">
+        <div class="row min-vh-100 align-items-center gy-5">
+            <div class="col-lg-7 hero-copy" data-aos="fade-up">
+                {% if profile.available_for_work %}<div class="availability"><span class="status-dot"></span> {{ profile.availability_text }}</div>{% endif %}
+                <p class="eyebrow">AI/ML + BACKEND ENGINEERING</p>
+                <h1>I build intelligent systems that are ready for the <span>real world.</span></h1>
+                <p class="hero-lead">I'm {{ profile.name|default:"Atiq Ur Rehman" }}, an {{ profile.professional_title|default:"AI/ML & Backend Engineer" }} focused on production-ready AI, reliable APIs, and scalable Python applications.</p>
+                <div class="hero-actions">
+                    <a href="{% url 'projects' %}" class="btn btn-primary btn-lg">Explore my work <i class="fas fa-arrow-right ms-2" aria-hidden="true"></i></a>
+                    <a href="{% url 'contact' %}" class="btn btn-ghost btn-lg">Start a conversation</a>
+                </div>
+                <div class="hero-meta" aria-label="Professional details">
+                    <div><span>Focus</span><strong>AI systems & APIs</strong></div>
+                    <div><span>Core stack</span><strong>Python · Django · ML</strong></div>
+                    <div><span>Working</span><strong>Remote · Worldwide</strong></div>
+                </div>
+            </div>
+            <div class="col-lg-5" data-aos="fade-left" data-aos-delay="120">
+                <div class="hero-visual" aria-label="Abstract representation of connected intelligent systems">
+                    <div class="visual-orbit orbit-one"></div>
+                    <div class="visual-orbit orbit-two"></div>
+                    <div class="visual-core"><span>AR</span><small>ENGINEER</small></div>
+                    <span class="tech-node node-python">Python</span>
+                    <span class="tech-node node-ai">AI / ML</span>
+                    <span class="tech-node node-django">Django</span>
+                    <span class="tech-node node-api">APIs</span>
+                </div>
+            </div>
+        </div>
+        <a href="#featured-work" class="scroll-cue" aria-label="Scroll to selected projects"><span>Scroll to explore</span><i class="fas fa-arrow-down" aria-hidden="true"></i></a>
+    </div>
+</section>
+
+<section class="projects-section section-pad" id="featured-work">
+    <div class="container">
+        <div class="section-heading" data-aos="fade-up">
+            <div><p class="eyebrow">SELECTED WORK</p><h2>Projects built around <span>real problems.</span></h2></div>
+            <a href="{% url 'projects' %}" class="text-link">View all projects <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        <div class="row g-4">
+            {% for project in featured_projects %}
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:50 }}">
+                <article class="project-card card h-100">
+                    <div class="project-image-wrapper">
+                        {% if project.image %}<img src="{{ project.image.url }}" class="card-img-top" alt="Preview of {{ project.title }}">{% else %}<div class="placeholder-image"><i class="fas fa-code" aria-hidden="true"></i></div>{% endif %}
+                        <span class="project-number">0{{ forloop.counter }}</span>
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ project.title }}</h3>
+                        <p>{{ project.description|truncatewords:20 }}</p>
+                        <div class="tech-stack">{% for tech in project.get_tech_list|slice:":3" %}<span>{{ tech }}</span>{% endfor %}</div>
+                        <a href="{% url 'project_detail' project.slug %}" class="stretched-link text-link">Read case study <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                    </div>
+                </article>
+            </div>
+            {% empty %}
+            <div class="col-12"><div class="empty-state"><p>Selected case studies are being prepared.</p><a href="{% url 'projects' %}" class="text-link">Browse all work <i class="fas fa-arrow-right"></i></a></div></div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="about-section section-pad" id="about">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-5" data-aos="fade-right">
+                <div class="about-visual {% if profile.profile_image %}has-profile-image{% endif %}">
+                    {% if profile.profile_image %}<img class="about-profile-image" src="{{ profile.profile_image.url }}" alt="{{ profile.profile_image_alt|default:profile.name }}">{% else %}<div class="about-monogram">AR</div>{% endif %}
+                    <div class="about-code"><span>01</span><p>Think clearly.</p><span>02</span><p>Build reliably.</p><span>03</span><p>Keep improving.</p></div>
+                </div>
+            </div>
+            <div class="col-lg-7" data-aos="fade-up">
+                <p class="eyebrow">ABOUT ME</p>
+                <h2>Engineering practical AI, from <span>idea to deployment.</span></h2>
+                <p class="about-lead">{{ profile.short_bio|default:"I’m an AI/ML and backend engineer who enjoys turning complex ideas into dependable software. My work sits where intelligent models meet the systems people actually use." }}</p>
+                <div class="about-copy">{{ profile.about|default:"I focus on clear architecture, maintainable Python, thoughtful APIs, and solutions that work beyond the prototype. Whether I’m developing an ML workflow or a Django backend, I care about understanding the problem first and building with purpose."|linebreaks }}</div>
+                <div class="about-principles">
+                    <div><i class="fas fa-diagram-project" aria-hidden="true"></i><span><strong>Systems thinking</strong><small>Connecting models, data, APIs, and users.</small></span></div>
+                    <div><i class="fas fa-layer-group" aria-hidden="true"></i><span><strong>Production mindset</strong><small>Reliable foundations that can grow.</small></span></div>
+                    <div><i class="fas fa-lightbulb" aria-hidden="true"></i><span><strong>Purposeful solutions</strong><small>Technology chosen for the problem.</small></span></div>
+                </div>
+                <div class="about-links"><a href="{% url 'resume' %}" class="btn btn-primary">View experience</a>{% if profile.github_url %}<a href="{{ profile.github_url }}" target="_blank" rel="noopener noreferrer" class="text-link">GitHub profile <span aria-hidden="true">↗</span></a>{% endif %}</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="skills-section section-pad">
+    <div class="container">
+        <div class="section-heading" data-aos="fade-up"><div><p class="eyebrow">CAPABILITIES</p><h2>Tools I use to turn <span>ideas into products.</span></h2></div></div>
+        <div class="row g-4">
+            {% regroup skills by get_skill_type_display as skill_groups %}
+            {% for group in skill_groups %}
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:50 }}">
+                <div class="skill-category card h-100"><div class="card-body"><span class="skill-index">0{{ forloop.counter }}</span><h3>{{ group.grouper }}</h3><div class="skill-list">{% for skill in group.list %}<div class="skill-chip">{% if skill.icon %}<i class="{{ skill.icon }}" aria-hidden="true"></i>{% endif %}<span>{{ skill.name }}</span>{% if skill.description %}<small>{{ skill.description }}</small>{% endif %}</div>{% endfor %}</div></div></div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="experience-section section-pad">
+    <div class="container">
+        <div class="section-heading" data-aos="fade-up"><div><p class="eyebrow">EXPERIENCE</p><h2>A track record of <span>building and learning.</span></h2></div><a href="{% url 'resume' %}" class="text-link">Full experience <i class="fas fa-arrow-right"></i></a></div>
+        <div class="experience-list">
+            {% for exp in experiences %}
+            <article class="experience-row" data-aos="fade-up"><div class="experience-date">{{ exp.start_date|date:"Y" }} — {% if exp.current %}Now{% else %}{{ exp.end_date|date:"Y" }}{% endif %}</div><div><h3>{{ exp.title }}</h3><p class="company">{{ exp.company }}{% if exp.location %} · {{ exp.location }}{% endif %}</p><p>{{ exp.description|truncatewords:35 }}</p>{% if exp.get_tech_list %}<div class="tech-stack experience-tech">{% for tech in exp.get_tech_list|slice:":5" %}<span>{{ tech }}</span>{% endfor %}</div>{% endif %}</div></article>
+            {% empty %}<div class="empty-state">Experience details are being updated.</div>{% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="container"><div class="cta-panel" data-aos="fade-up"><p class="eyebrow">LET'S BUILD SOMETHING USEFUL</p><h2>Have a problem worth solving?</h2><p>I’m always interested in thoughtful projects, strong teams, and meaningful engineering challenges.</p><a href="{% url 'contact' %}" class="btn btn-light btn-lg">Start a conversation <i class="fas fa-arrow-right ms-2"></i></a></div></div>
+</section>
+{% endblock %}
