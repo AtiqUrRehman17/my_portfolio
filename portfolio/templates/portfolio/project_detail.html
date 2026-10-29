@@ -60,7 +60,24 @@
 
                 {% if project.problem %}<section id="problem" class="case-section" data-aos="fade-up"><p class="section-number">02 / THE PROBLEM</p><h2>What needed to be solved</h2><div class="case-prose">{{ project.problem|linebreaks }}</div></section>{% endif %}
                 {% if project.solution %}<section id="solution" class="case-section" data-aos="fade-up"><p class="section-number">03 / THE SOLUTION</p><h2>How I approached it</h2><div class="case-prose">{{ project.solution|linebreaks }}</div></section>{% endif %}
-                {% if project.architecture %}<section id="architecture" class="case-section" data-aos="fade-up"><p class="section-number">04 / ARCHITECTURE</p><h2>How the system works</h2><div class="case-prose">{{ project.architecture|linebreaks }}</div></section>{% endif %}
+                {% if project.architecture %}
+                <section id="architecture" class="case-section" data-aos="fade-up">
+                    <p class="section-number">04 / ARCHITECTURE</p>
+                    <h2>How the system works</h2>
+                    {% if project.get_pipeline_steps %}
+                    <div class="pipeline-diagram">
+                        <div class="pipeline-track">
+                            {% for step in project.get_pipeline_steps %}
+                            <div class="pipeline-node"><span class="pipeline-index">0{{ forloop.counter }}</span><span>{{ step }}</span></div>
+                            {% if not forloop.last %}<div class="pipeline-connector" style="--i: {{ forloop.counter0 }}"><span class="pipeline-packet"></span></div>{% endif %}
+                            {% endfor %}
+                        </div>
+                        <p class="visually-hidden">Pipeline stages: {{ project.pipeline_steps }}</p>
+                    </div>
+                    {% endif %}
+                    <div class="case-prose">{{ project.architecture|linebreaks }}</div>
+                </section>
+                {% endif %}
                 {% if project.key_features %}<section id="features" class="case-section" data-aos="fade-up"><p class="section-number">05 / KEY FEATURES</p><h2>What the project delivers</h2><div class="feature-grid">{% for feature in project.get_feature_list %}<div><span>0{{ forloop.counter }}</span><p>{{ feature }}</p></div>{% endfor %}</div></section>{% endif %}
                 {% if project.challenges %}<section id="challenges" class="case-section" data-aos="fade-up"><p class="section-number">06 / CHALLENGES</p><h2>Engineering through complexity</h2><div class="case-prose">{{ project.challenges|linebreaks }}</div></section>{% endif %}
                 {% if project.results %}<section id="results" class="case-section case-results" data-aos="fade-up"><p class="section-number">07 / RESULTS</p><h2>The outcome</h2><div class="case-prose">{{ project.results|linebreaks }}</div></section>{% endif %}

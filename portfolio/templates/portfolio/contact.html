@@ -1,115 +1,81 @@
 {% extends 'portfolio/base.html' %}
 
+{% block title %}Contact — {{ site_profile.name|default:"Atiq Ur Rehman" }}{% endblock %}
+
 {% block content %}
-<section class="contact-section py-5">
+<section class="contact-section">
     <div class="container">
-        <div class="row">
-            <div class="col-12 text-center mb-5" data-aos="fade-up">
-                <h1 class="display-4 fw-bold">Get In <span class="text-primary">Touch</span></h1>
-                <p class="lead text-muted">Have a project in mind? Let's discuss!</p>
-                <div class="divider mx-auto"></div>
-            </div>
+        <div class="contact-header" data-aos="fade-up">
+            <p class="eyebrow">GET IN TOUCH</p>
+            <h1>Have a project in mind? <span>Let's talk.</span></h1>
+            <p class="contact-lead">Whether it's an idea, a role, or a question — I read every message and reply personally.</p>
+            <div class="divider"></div>
         </div>
-        
-        <div class="row g-4">
-            <div class="col-lg-5" data-aos="fade-right">
-                <div class="contact-info card h-100">
-                    <div class="card-body p-4">
-                        <h3 class="h4 mb-4">Contact Information</h3>
-                        <div class="info-item mb-4">
-                            <div class="d-flex align-items-center">
-                                <div class="icon-box bg-primary text-white rounded-circle me-3">
-                                    <i class="fas fa-envelope"></i>
-                                </div>
-                                <div>
-                                    <h5 class="mb-0">Email</h5>
-                                    <p class="text-muted mb-0">{{ site_profile.email|default:"Email available on request" }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="info-item mb-4">
-                            <div class="d-flex align-items-center">
-                                <div class="icon-box bg-primary text-white rounded-circle me-3">
-                                    <i class="fab fa-github"></i>
-                                </div>
-                                <div>
-                                    <h5 class="mb-0">GitHub</h5>
-                                    <p class="text-muted mb-0">{% if site_profile.github_url %}<a href="{{ site_profile.github_url }}" target="_blank" rel="noopener noreferrer">GitHub profile</a>{% else %}Profile coming soon{% endif %}</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="info-item mb-4">
-                            <div class="d-flex align-items-center">
-                                <div class="icon-box bg-primary text-white rounded-circle me-3">
-                                    <i class="fab fa-linkedin"></i>
-                                </div>
-                                <div>
-                                    <h5 class="mb-0">LinkedIn</h5>
-                                    <p class="text-muted mb-0">{% if site_profile.linkedin_url %}<a href="{{ site_profile.linkedin_url }}" target="_blank" rel="noopener noreferrer">LinkedIn profile</a>{% else %}Profile coming soon{% endif %}</p>
-                                </div>
-                            </div>
-                        </div>
-                        
+
+        <div class="contact-grid">
+            <div class="contact-info card" data-aos="fade-right">
+                <div class="card-body">
+                    <h2>Contact information</h2>
+                    <div class="info-list">
                         <div class="info-item">
-                            <div class="d-flex align-items-center">
-                                <div class="icon-box bg-primary text-white rounded-circle me-3">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                </div>
-                                <div>
-                                    <h5 class="mb-0">Location</h5>
-                                    <p class="text-muted mb-0">{{ site_profile.location|default:"Remote / Worldwide" }}</p>
-                                </div>
+                            <span class="info-icon"><i class="fas fa-envelope" aria-hidden="true"></i></span>
+                            <div>
+                                <span class="info-label">Email</span>
+                                <p>{{ site_profile.email|default:"Email available on request" }}</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-icon"><i class="fab fa-github" aria-hidden="true"></i></span>
+                            <div>
+                                <span class="info-label">GitHub</span>
+                                <p>{% if site_profile.github_url %}<a href="{{ site_profile.github_url }}" target="_blank" rel="noopener noreferrer">GitHub profile</a>{% else %}Profile coming soon{% endif %}</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-icon"><i class="fab fa-linkedin" aria-hidden="true"></i></span>
+                            <div>
+                                <span class="info-label">LinkedIn</span>
+                                <p>{% if site_profile.linkedin_url %}<a href="{{ site_profile.linkedin_url }}" target="_blank" rel="noopener noreferrer">LinkedIn profile</a>{% else %}Profile coming soon{% endif %}</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-icon"><i class="fas fa-map-marker-alt" aria-hidden="true"></i></span>
+                            <div>
+                                <span class="info-label">Location</span>
+                                <p>{{ site_profile.location|default:"Remote / Worldwide" }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="col-lg-7" data-aos="fade-left">
-                <div class="contact-form card">
-                    <div class="card-body p-4">
-                        <h3 class="h4 mb-4">Send me a message</h3>
-                        <form method="post">
-                            {% csrf_token %}
-                            <div class="mb-3">
-                                <label for="{{ form.name.id_for_label }}" class="form-label">Your Name *</label>
-                                {{ form.name }}
-                                {% if form.name.errors %}
-                                <div class="text-danger small">{{ form.name.errors }}</div>
-                                {% endif %}
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="{{ form.email.id_for_label }}" class="form-label">Email Address *</label>
-                                {{ form.email }}
-                                {% if form.email.errors %}
-                                <div class="text-danger small">{{ form.email.errors }}</div>
-                                {% endif %}
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="{{ form.subject.id_for_label }}" class="form-label">Subject *</label>
-                                {{ form.subject }}
-                                {% if form.subject.errors %}
-                                <div class="text-danger small">{{ form.subject.errors }}</div>
-                                {% endif %}
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="{{ form.message.id_for_label }}" class="form-label">Message *</label>
-                                {{ form.message }}
-                                {% if form.message.errors %}
-                                <div class="text-danger small">{{ form.message.errors }}</div>
-                                {% endif %}
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary btn-lg w-100">
-                                <i class="fas fa-paper-plane me-2"></i>Send Message
-                            </button>
-                        </form>
-                    </div>
+
+            <div class="contact-form card" data-aos="fade-left">
+                <div class="card-body">
+                    <h2>Send a message</h2>
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="{{ form.name.id_for_label }}">Your name *</label>
+                            {{ form.name }}
+                            {% if form.name.errors %}<p class="form-error">{{ form.name.errors }}</p>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.email.id_for_label }}">Email address *</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}<p class="form-error">{{ form.email.errors }}</p>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.subject.id_for_label }}">Subject *</label>
+                            {{ form.subject }}
+                            {% if form.subject.errors %}<p class="form-error">{{ form.subject.errors }}</p>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.message.id_for_label }}">Message *</label>
+                            {{ form.message }}
+                            {% if form.message.errors %}<p class="form-error">{{ form.message.errors }}</p>{% endif %}
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg w-100">Send message <i class="fas fa-paper-plane ms-2" aria-hidden="true"></i></button>
+                    </form>
                 </div>
             </div>
         </div>

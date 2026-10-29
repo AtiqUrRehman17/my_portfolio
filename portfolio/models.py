@@ -22,8 +22,30 @@ class Profile(models.Model):
         validators=[FileExtensionValidator(['pdf'])],
         help_text='Upload a PDF résumé.',
     )
+    intro_video = models.FileField(
+        upload_to='intro-video/',
+        blank=True,
+        null=True,
+        validators=[FileExtensionValidator(['mp4', 'webm', 'mov'])],
+        help_text='A short intro video (MP4 recommended, H.264). Keep it well compressed — '
+                  'aim under ~30MB — since PythonAnywhere free accounts have a 512MB total '
+                  'disk quota shared with your database and every uploaded image.',
+    )
+    intro_video_poster = models.ImageField(
+        upload_to='intro-video/',
+        blank=True,
+        null=True,
+        help_text='Optional cover frame shown before the video plays or loads.',
+    )
     available_for_work = models.BooleanField(default=True)
     availability_text = models.CharField(max_length=160, default='Open to meaningful opportunities')
+    currently_exploring = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="Comma-separated list of things you're currently building or exploring — "
+                  "shown as a rotating line on the home page, e.g. "
+                  "'Voice-native RAG systems, Production ML pipelines, Agentic AI workflows'.",
+    )
 
     class Meta:
         verbose_name = 'Site profile'
@@ -102,7 +124,14 @@ class Project(models.Model):
     key_features = models.TextField(blank=True, help_text="Enter one feature per line.")
     challenges = models.TextField(blank=True)
     results = models.TextField(blank=True)
-    
+    pipeline_steps = models.CharField(
+        max_length=400,
+        blank=True,
+        help_text="Comma-separated pipeline stages for an animated architecture diagram on "
+                  "the case study page, e.g. 'Upload, Deepgram STT, LangChain Retrieval, "
+                  "GPT-4o mini, ElevenLabs TTS'. Leave blank to hide the diagram.",
+    )
+
     class Meta:
         ordering = ['-featured', 'order', '-created_date']
     
@@ -125,6 +154,9 @@ class Project(models.Model):
 
     def get_feature_list(self):
         return [feature.strip() for feature in self.key_features.splitlines() if feature.strip()]
+
+    def get_pipeline_steps(self):
+        return [step.strip() for step in self.pipeline_steps.split(',') if step.strip()]
 
     @property
     def card_summary(self):

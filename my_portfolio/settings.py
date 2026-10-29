@@ -23,9 +23,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-omw-&-^7x=9z(8^3d1@$1+dnops77g6(f03fvf_y(tl2k_g@$6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Defaults to True for local development. On PythonAnywhere, set the
+# environment variable DJANGO_DEBUG=False in the WSGI configuration file
+# so the live site doesn't leak debug tracebacks.
+DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["atiqrehman.pythonanywhere.com", "127.0.0.1", "localhost"]
+
+# Needed so Django trusts POST requests (e.g. the contact form) submitted
+# from the live PythonAnywhere domain.
+CSRF_TRUSTED_ORIGINS = ["https://atiqrehman.pythonanywhere.com"]
 
 
 # Application definition

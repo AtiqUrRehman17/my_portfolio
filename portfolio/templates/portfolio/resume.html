@@ -13,9 +13,9 @@
             <div class="col-lg-4 resume-intro" data-aos="fade-up" data-aos-delay="80">
                 <p>{{ site_profile.short_bio|default:"AI/ML and backend engineering experience focused on dependable systems, thoughtful architecture, and practical results." }}</p>
                 {% if site_profile.resume %}
-                <a href="{{ site_profile.resume.url }}" target="_blank" class="btn btn-primary"><i class="fas fa-file-pdf me-2" aria-hidden="true"></i>Download résumé</a>
+                <a href="{{ site_profile.resume.url }}" target="_blank" class="btn btn-primary"><i class="fas fa-file-pdf me-2" aria-hidden="true"></i>Download resume</a>
                 {% else %}
-                <span class="resume-unavailable"><i class="fas fa-circle-info me-2"></i>Résumé PDF will be available soon</span>
+                <span class="resume-unavailable"><i class="fas fa-circle-info me-2"></i>Resume PDF will be available soon</span>
                 {% endif %}
             </div>
         </div>
@@ -80,7 +80,7 @@
                     <div class="toolkit-grid">
                         {% regroup skills by get_skill_type_display as skill_groups %}
                         {% for group in skill_groups %}
-                        <article class="toolkit-group"><h3>{{ group.grouper }}</h3><div>{% for skill in group.list %}<span class="tool-item">{% if skill.icon %}<i class="{{ skill.icon }}" aria-hidden="true"></i>{% endif %}<span><strong>{{ skill.name }}</strong>{% if skill.description %}<small>{{ skill.description }}</small>{% endif %}</span></span>{% endfor %}</div></article>
+                        <article class="toolkit-group"><h3>{{ group.grouper }}</h3><div>{% for skill in group.list %}<span class="tool-item">{% if skill.icon %}<i class="{{ skill.icon }}" aria-hidden="true"></i>{% endif %}<span><strong>{{ skill.name }}</strong>{% if skill.description %}<small>{{ skill.description }}</small>{% endif %}<div class="skill-bar" role="img" aria-label="Proficiency: {{ skill.proficiency }}%"><span class="skill-bar-fill" style="--proficiency: {{ skill.proficiency }}%"></span></div></span></span>{% endfor %}</div></article>
                         {% empty %}<div class="empty-state">Technical skills are being updated.</div>{% endfor %}
                     </div>
                 </section>

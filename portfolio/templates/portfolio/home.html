@@ -11,10 +11,10 @@
     <div class="container position-relative">
         <div class="row min-vh-100 align-items-center gy-5">
             <div class="col-lg-7 hero-copy" data-aos="fade-up">
-                {% if profile.available_for_work %}<div class="availability"><span class="status-dot"></span> {{ profile.availability_text }}</div>{% endif %}
+                {% if site_profile.available_for_work %}<div class="availability"><span class="status-dot"></span> {{ site_profile.availability_text }}</div>{% endif %}
                 <p class="eyebrow">AI/ML + BACKEND ENGINEERING</p>
-                <h1>I build intelligent systems that are ready for the <span>real world.</span></h1>
-                <p class="hero-lead">I'm {{ profile.name|default:"Atiq Ur Rehman" }}, an {{ profile.professional_title|default:"AI/ML & Backend Engineer" }} focused on production-ready AI, reliable APIs, and scalable Python applications.</p>
+                <h1>I build AI systems that hold up <span>after the demo ends.</span></h1>
+                <p class="hero-lead">I'm {{ site_profile.name|default:"Atiq Ur Rehman" }}, an {{ site_profile.professional_title|default:"AI/ML & Backend Engineer" }} focused on production-ready AI, reliable APIs, and scalable Python applications.</p>
                 <div class="hero-actions">
                     <a href="{% url 'projects' %}" class="btn btn-primary btn-lg">Explore my work <i class="fas fa-arrow-right ms-2" aria-hidden="true"></i></a>
                     <a href="{% url 'contact' %}" class="btn btn-ghost btn-lg">Start a conversation</a>
@@ -27,17 +27,66 @@
             </div>
             <div class="col-lg-5" data-aos="fade-left" data-aos-delay="120">
                 <div class="hero-visual" aria-label="Abstract representation of connected intelligent systems">
-                    <div class="visual-orbit orbit-one"></div>
-                    <div class="visual-orbit orbit-two"></div>
-                    <div class="visual-core"><span>AR</span><small>ENGINEER</small></div>
-                    <span class="tech-node node-python">Python</span>
-                    <span class="tech-node node-ai">AI / ML</span>
-                    <span class="tech-node node-django">Django</span>
-                    <span class="tech-node node-api">APIs</span>
+                    <div class="visual-orbit orbit-one" aria-hidden="true"></div>
+                    <div class="visual-orbit orbit-two" aria-hidden="true"></div>
+                    <div class="visual-core" aria-hidden="true"><span>AR</span><small>ENGINEER</small></div>
+                    <div class="orbit-track orbit-node-python" aria-hidden="true"><span class="tech-node">Python</span></div>
+                    <div class="orbit-track orbit-node-ai" aria-hidden="true"><span class="tech-node">AI / ML</span></div>
+                    <div class="orbit-track orbit-node-django" aria-hidden="true"><span class="tech-node">Django</span></div>
+                    <div class="orbit-track orbit-node-api" aria-hidden="true"><span class="tech-node">APIs</span></div>
+                    <div class="orbit-track orbit-node-genai" aria-hidden="true"><span class="tech-node">Generative AI</span></div>
+                    <div class="orbit-track orbit-node-aws" aria-hidden="true"><span class="tech-node">AWS</span></div>
+                    <div class="orbit-track orbit-node-docker" aria-hidden="true"><span class="tech-node">Docker</span></div>
                 </div>
             </div>
         </div>
         <a href="#featured-work" class="scroll-cue" aria-label="Scroll to selected projects"><span>Scroll to explore</span><i class="fas fa-arrow-down" aria-hidden="true"></i></a>
+    </div>
+</section>
+
+{% if site_profile.intro_video %}
+<section class="intro-video-section section-pad">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-5" data-aos="fade-right">
+                <p class="eyebrow">MEET ME</p>
+                <h2>A quick introduction, <span>in my own words.</span></h2>
+                <p class="intro-video-copy">A short video walking through my journey into AI/ML and backend engineering — how I got here, the skills I've built along the way, and the kind of problems I enjoy solving.</p>
+                <a href="{% url 'resume' %}" class="text-link">See the full journey <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+            </div>
+            <div class="col-lg-7" data-aos="fade-left">
+                <div class="video-frame">
+                    <video id="intro-video-player" {% if site_profile.intro_video_poster %}poster="{{ site_profile.intro_video_poster.url }}"{% endif %} muted loop playsinline preload="metadata">
+                        <source src="{{ site_profile.intro_video.url }}" type="video/mp4">
+                    </video>
+                    <span class="video-play-icon" aria-hidden="true"><i class="fas fa-play"></i></span>
+                    <button type="button" class="video-sound-toggle" aria-pressed="false" aria-label="Unmute video">
+                        <i class="fas fa-volume-mute" aria-hidden="true"></i><span>Tap for sound</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="stats-strip">
+    <div class="container">
+        <div class="stats-row" data-aos="fade-up">
+            <div class="stats-current">
+                <span class="stats-label">Currently exploring</span>
+                <p class="role-rotator">
+                    <span class="role-rotator-text" data-items="{{ site_profile.currently_exploring|default:'Voice-native RAG systems, Production ML pipelines, Reliable Django APIs, Agentic AI workflows' }}" aria-hidden="true"></span><span class="role-rotator-cursor" aria-hidden="true"></span>
+                    <span class="visually-hidden">{{ site_profile.currently_exploring|default:"Voice-native RAG systems, Production ML pipelines, Reliable Django APIs, Agentic AI workflows" }}</span>
+                </p>
+            </div>
+            <div class="stats-numbers">
+                <div class="stat"><strong>{{ years_experience }}+</strong><span>Years experience</span></div>
+                <div class="stat"><strong>{{ projects_count }}</strong><span>Projects shipped</span></div>
+                <div class="stat"><strong>{{ skills_count }}</strong><span>Technologies</span></div>
+                <div class="stat stat-text"><strong>{{ site_profile.availability_text|default:"Open to work" }}</strong><span>Availability</span></div>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -74,24 +123,58 @@
     <div class="container">
         <div class="row g-5 align-items-center">
             <div class="col-lg-5" data-aos="fade-right">
-                <div class="about-visual {% if profile.profile_image %}has-profile-image{% endif %}">
-                    {% if profile.profile_image %}<img class="about-profile-image" src="{{ profile.profile_image.url }}" alt="{{ profile.profile_image_alt|default:profile.name }}">{% else %}<div class="about-monogram">AR</div>{% endif %}
-                    <div class="about-code"><span>01</span><p>Think clearly.</p><span>02</span><p>Build reliably.</p><span>03</span><p>Keep improving.</p></div>
+                <div class="about-visual">
+                    {% if site_profile.profile_image %}<img class="about-profile-image" src="{{ site_profile.profile_image.url }}" alt="{{ site_profile.profile_image_alt|default:site_profile.name }}">{% else %}<div class="about-monogram">AR</div>{% endif %}
                 </div>
             </div>
             <div class="col-lg-7" data-aos="fade-up">
                 <p class="eyebrow">ABOUT ME</p>
                 <h2>Engineering practical AI, from <span>idea to deployment.</span></h2>
-                <p class="about-lead">{{ profile.short_bio|default:"I’m an AI/ML and backend engineer who enjoys turning complex ideas into dependable software. My work sits where intelligent models meet the systems people actually use." }}</p>
-                <div class="about-copy">{{ profile.about|default:"I focus on clear architecture, maintainable Python, thoughtful APIs, and solutions that work beyond the prototype. Whether I’m developing an ML workflow or a Django backend, I care about understanding the problem first and building with purpose."|linebreaks }}</div>
+                <p class="about-lead">{{ site_profile.short_bio|default:"I’m an AI/ML and backend engineer who enjoys turning complex ideas into dependable software. My work sits where intelligent models meet the systems people actually use." }}</p>
+                <div class="about-copy">{{ site_profile.about|default:"I focus on clear architecture, maintainable Python, thoughtful APIs, and solutions that work beyond the prototype. Whether I’m developing an ML workflow or a Django backend, I care about understanding the problem first and building with purpose."|linebreaks }}</div>
                 <div class="about-principles">
                     <div><i class="fas fa-diagram-project" aria-hidden="true"></i><span><strong>Systems thinking</strong><small>Connecting models, data, APIs, and users.</small></span></div>
                     <div><i class="fas fa-layer-group" aria-hidden="true"></i><span><strong>Production mindset</strong><small>Reliable foundations that can grow.</small></span></div>
                     <div><i class="fas fa-lightbulb" aria-hidden="true"></i><span><strong>Purposeful solutions</strong><small>Technology chosen for the problem.</small></span></div>
                 </div>
-                <div class="about-links"><a href="{% url 'resume' %}" class="btn btn-primary">View experience</a>{% if profile.github_url %}<a href="{{ profile.github_url }}" target="_blank" rel="noopener noreferrer" class="text-link">GitHub profile <span aria-hidden="true">↗</span></a>{% endif %}</div>
+                <div class="about-links"><a href="{% url 'resume' %}" class="btn btn-primary">View experience</a>{% if site_profile.github_url %}<a href="{{ site_profile.github_url }}" target="_blank" rel="noopener noreferrer" class="text-link">GitHub profile <span aria-hidden="true">↗</span></a>{% endif %}</div>
+
+                {% if github_contributions %}
+                <div class="github-activity">
+                    <span class="github-activity-label">Recent GitHub activity</span>
+                    <div class="github-graph" role="img" aria-label="{{ github_contributions.total }} GitHub contributions in the last year">
+                        <div class="github-grid">
+                            {% for week in github_contributions.weeks %}
+                            <div class="github-week">
+                                {% for day in week %}
+                                {% if day %}<span class="github-day level-{{ day.level }}" title="{{ day.date }}: {{ day.count }} contribution{{ day.count|pluralize }}"></span>{% else %}<span class="github-day is-empty"></span>{% endif %}
+                                {% endfor %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <p class="github-caption">{{ github_contributions.total }} contributions in the last year</p>
+                </div>
+                {% endif %}
             </div>
         </div>
+    </div>
+</section>
+
+<section class="terminal-section section-pad">
+    <div class="container">
+        <div class="section-heading" data-aos="fade-up">
+            <div><p class="eyebrow">BEHIND THE SCENES</p><h2>A request moving through <span>one of my systems.</span></h2></div>
+        </div>
+        <div class="terminal-window" data-aos="fade-up">
+            <div class="terminal-bar">
+                <span class="terminal-dot dot-red"></span><span class="terminal-dot dot-yellow"></span><span class="terminal-dot dot-green"></span>
+                <span class="terminal-title">bash — rag-service</span>
+            </div>
+            <div class="terminal-body" id="terminal-log" aria-hidden="true"></div>
+        </div>
+        <p class="terminal-caption">A simulated trace, illustrating how a request actually moves through the Conversational RAG project.</p>
+        <p class="visually-hidden">Simulated log trace: a request is received, LangChain retrieves matching context from the uploaded document, GPT-4o mini generates a grounded response, and ElevenLabs streams it back as speech.</p>
     </div>
 </section>
 
@@ -102,7 +185,7 @@
             {% regroup skills by get_skill_type_display as skill_groups %}
             {% for group in skill_groups %}
             <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:50 }}">
-                <div class="skill-category card h-100"><div class="card-body"><span class="skill-index">0{{ forloop.counter }}</span><h3>{{ group.grouper }}</h3><div class="skill-list">{% for skill in group.list %}<div class="skill-chip">{% if skill.icon %}<i class="{{ skill.icon }}" aria-hidden="true"></i>{% endif %}<span>{{ skill.name }}</span>{% if skill.description %}<small>{{ skill.description }}</small>{% endif %}</div>{% endfor %}</div></div></div>
+                <div class="skill-category card h-100"><div class="card-body"><span class="skill-index">0{{ forloop.counter }}</span><h3>{{ group.grouper }}</h3><div class="skill-list">{% for skill in group.list %}<div class="skill-chip">{% if skill.icon %}<i class="{{ skill.icon }}" aria-hidden="true"></i>{% endif %}<span>{{ skill.name }}</span>{% if skill.description %}<small>{{ skill.description }}</small>{% endif %}<div class="skill-bar" role="img" aria-label="Proficiency: {{ skill.proficiency }}%"><span class="skill-bar-fill" style="--proficiency: {{ skill.proficiency }}%"></span></div></div>{% endfor %}</div></div></div>
             </div>
             {% endfor %}
         </div>

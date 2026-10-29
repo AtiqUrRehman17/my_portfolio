@@ -8,7 +8,8 @@ class ProfileAdmin(admin.ModelAdmin):
         ('Identity', {'fields': ('name', 'professional_title', 'short_bio', 'about')}),
         ('Contact', {'fields': ('email', 'location', 'github_url', 'linkedin_url')}),
         ('Media', {'fields': ('profile_image', 'profile_image_alt', 'resume')}),
-        ('Availability', {'fields': ('available_for_work', 'availability_text')}),
+        ('Intro video', {'fields': ('intro_video', 'intro_video_poster')}),
+        ('Availability', {'fields': ('available_for_work', 'availability_text', 'currently_exploring')}),
     ]
 
     def has_add_permission(self, request):
@@ -37,7 +38,7 @@ class ProjectAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Project identity', {'fields': ('title', 'slug', 'short_summary', 'category', 'role')}),
         ('Overview', {'fields': ('description', 'technologies')}),
-        ('Case study', {'fields': ('problem', 'solution', 'architecture', 'key_features', 'challenges', 'results')}),
+        ('Case study', {'fields': ('problem', 'solution', 'architecture', 'pipeline_steps', 'key_features', 'challenges', 'results')}),
         ('Links', {'fields': ('github_link', 'live_link')}),
         ('Cover image', {'fields': ('image', 'image_alt')}),
         ('Publishing', {'fields': ('featured', 'order', 'created_date')}),
@@ -62,5 +63,15 @@ class EducationAdmin(admin.ModelAdmin):
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):
     list_display = ['name', 'email', 'subject', 'created_date', 'is_read']
+    list_editable = ['is_read']
     list_filter = ['is_read', 'created_date']
     search_fields = ['name', 'email', 'subject', 'message']
+    actions = ['mark_as_read', 'mark_as_unread']
+
+    @admin.action(description='Mark selected messages as read')
+    def mark_as_read(self, request, queryset):
+        queryset.update(is_read=True)
+
+    @admin.action(description='Mark selected messages as unread')
+    def mark_as_unread(self, request, queryset):
+        queryset.update(is_read=False)
